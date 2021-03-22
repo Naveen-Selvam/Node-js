@@ -64,6 +64,40 @@ app.post('/api/task', (req, res) => {
       res.json(err);
     });
 });
+app.get('/api/task/:id', (req, res) => {
+  const id = req.params.id;
+  task
+    .findById(id)
+    .then((task) => {
+      res.json(task);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+app.put('/api/task/:id', (req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+  task
+    .findByIdAndUpdate(id, body, { new: true, runValidators: true })
+    .then((task) => {
+      res.json(task);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+app.delete('/api/task/:id', (req, res) => {
+  const id = req.params.id;
+  task
+    .findByIdAndDelete(id)
+    .then((task) => {
+      res.json('task');
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
 
 app.listen(port, () => {
   console.log('running at port ', port);
