@@ -2,6 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 app.use(express.json());
+app.use((req, res, next) => {
+  console.log(`${req.mehtod}- ${req.url}-${req.ip}`);
+  next();
+});
 const port = 3033;
 
 mongoose
@@ -53,6 +57,7 @@ app.get('/api/task', (req, res) => {
     });
 });
 
+
 app.post('/api/task', (req, res) => {
   const body = req.body;
   const Task = new task(body);
@@ -64,6 +69,7 @@ app.post('/api/task', (req, res) => {
       res.json(err);
     });
 });
+
 app.get('/api/task/:id', (req, res) => {
   const id = req.params.id;
   task
@@ -75,6 +81,7 @@ app.get('/api/task/:id', (req, res) => {
       res.json(err);
     });
 });
+
 app.put('/api/task/:id', (req, res) => {
   const id = req.params.id;
   const body = req.body;
@@ -87,17 +94,19 @@ app.put('/api/task/:id', (req, res) => {
       res.json(err);
     });
 });
+
 app.delete('/api/task/:id', (req, res) => {
   const id = req.params.id;
   task
     .findByIdAndDelete(id)
     .then((task) => {
-      res.json('task');
+      res.json(task);
     })
     .catch((err) => {
       res.json(err);
     });
 });
+
 
 app.listen(port, () => {
   console.log('running at port ', port);
